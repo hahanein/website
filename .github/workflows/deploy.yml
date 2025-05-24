@@ -37,4 +37,5 @@ jobs:
           username: ${{ secrets.USER }}
           key:   ${{ secrets.SSH_KEY }}
           script: |
-            sudo systemctl restart website.service
+            systemctl --user daemon-reload
+            systemctl --user restart website.service
