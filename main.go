@@ -13,6 +13,6 @@ func main() {
 		}
 	})
 
-	log.Println("listening on :80")
-	log.Fatal(http.ListenAndServe(":80", nil))
+	log.Println("listening on :8767")
+	log.Fatal(http.ListenAndServe(":8767", nil))
 }
