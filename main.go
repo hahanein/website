@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"website/favicon"
 )
 
@@ -14,7 +15,15 @@ func main() {
 
 	http.HandleFunc("/favicon.ico", favicon.Handler)
 	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		if _, err := fmt.Fprintln(w, "Hello World"); err != nil {
+		file, err := os.Open("/proc/uptime")
+		if err != nil {
+			log.Printf("Error opening /proc/uptime: %v", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		defer file.Close()
+
+		if _, err := file.WriteTo(w); err != nil {
 			log.Printf("Error writing response: %v", err)
 		}
 	})

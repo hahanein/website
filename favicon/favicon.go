@@ -44,13 +44,11 @@ func init() {
 func Handler(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "image/x-icon")
 
-	icoCopy := make([]byte, len(ico))
-	copy(icoCopy, ico)
 	for i := 62; i < 62+1024; i += 4 {
-		icoCopy[i+3] = uint8(rand.Intn(256))
+		ico[i+3] = uint8(rand.Intn(256))
 	}
 
-	if _, err := w.Write(icoCopy); err != nil {
+	if _, err := w.Write(ico); err != nil {
 		log.Printf("Error writing favicon: %v", err)
 	}
 }
