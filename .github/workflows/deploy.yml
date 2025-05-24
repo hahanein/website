@@ -28,7 +28,7 @@ jobs:
           username: ${{ secrets.USER }}
           key:   ${{ secrets.SSH_KEY }}
           source: ./website
-          target: ./website
+          target: .
 
       - name: Restart service
         uses: appleboy/ssh-action@v1.0.3
