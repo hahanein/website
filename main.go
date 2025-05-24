@@ -8,7 +8,9 @@ import (
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		fmt.Fprintln(w, "Hello World")
+		if _, err := fmt.Fprintln(w, "Hello World"); err != nil {
+			log.Printf("Error writing response: %v", err)
+		}
 	})
 
 	log.Println("listening on :80")
