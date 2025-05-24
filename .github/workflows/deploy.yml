@@ -19,7 +19,7 @@ jobs:
 
       - name: Build Linux binary
         run: |
-          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o server .
+          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o website .
 
       - name: Copy binary to server
         uses: appleboy/scp-action@v0.1.4
@@ -27,8 +27,8 @@ jobs:
           host:   ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key:   ${{ secrets.SSH_KEY }}
-          source: ./server
-          target: /opt/hello-server/server
+          source: ./website
+          target: ./website
 
       - name: Restart service
         uses: appleboy/ssh-action@v1.0.3
