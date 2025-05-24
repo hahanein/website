@@ -8,12 +8,8 @@ import (
 )
 
 func main() {
-	port := flag.String("port", "", "port to listen on (required)")
+	port := flag.Uint("port", 3000, "port to listen on")
 	flag.Parse()
-
-	if *port == "" {
-		log.Fatal("port flag is required")
-	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		if _, err := fmt.Fprintln(w, "Hello World"); err != nil {
@@ -21,6 +17,6 @@ func main() {
 		}
 	})
 
-	log.Printf("listening on :%s", *port)
-	log.Fatal(http.ListenAndServe(":"+*port, nil))
+	log.Printf("listening on :%d", *port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), nil))
 }
