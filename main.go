@@ -15,6 +15,13 @@ func main() {
 
 	http.HandleFunc("/favicon.ico", favicon.Handler)
 	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		_, err := fmt.Fprintf(w, "Hello, World!\n\n")
+		if err != nil {
+			log.Printf("Error writing response: %v", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+
 		file, err := os.Open("/proc/uptime")
 		if err != nil {
 			log.Printf("Error opening /proc/uptime: %v", err)
