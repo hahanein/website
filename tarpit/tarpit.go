@@ -7,7 +7,6 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-	"net/url"
 	"strings"
 )
 
@@ -55,19 +54,36 @@ func generateDeterministicPath(rng *rand.Rand) string {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	if r.Header.Get("If-None-Match") != "" {
+		w.WriteHeader(http.StatusNotModified)
+		return
+	}
+
 	seed := hashPath(r.URL.Path)
 	content := generateDeterministicContent(seed)
 
 	rng1 := rand.New(rand.NewSource(int64(seed) + 1))
 	link1 := generateDeterministicPath(rng1)
-	escapedLink1 := url.QueryEscape(link1)
 
 	rng2 := rand.New(rand.NewSource(int64(seed) + 2))
 	link2 := generateDeterministicPath(rng2)
-	escapedLink2 := url.QueryEscape(link2)
 
-	response := fmt.Sprintf("%s\n\n<a href=\"%s\">%s</a>\n<a href=\"%s\">%s</a>\n",
-		content, link1, escapedLink1, link2, escapedLink2)
+	response := fmt.Sprintf(`
+<!DOCTYPE html>
+<html>
+<head>
+<title>%s</title>
+</head>
+<body>
+<p>%s</p>
+<ul>
+	<li><a href=\"%s\">%s</a></li>
+	<li><a href=\"%s\">%s</a></li>
+</ul>
+</body>
+</html>
+	`,
+		content, content, link1, link1, link2, link2)
 
 	h := sha256.New()
 	h.Write([]byte(response))
