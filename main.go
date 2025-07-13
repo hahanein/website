@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"website/favicon"
+	"website/tarpit"
 )
 
 func main() {
@@ -14,26 +14,7 @@ func main() {
 	flag.Parse()
 
 	http.HandleFunc("/favicon.ico", favicon.Handler)
-	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		_, err := fmt.Fprintf(w, "Hello, World!\n\n")
-		if err != nil {
-			log.Printf("Error writing response: %v", err)
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-			return
-		}
-
-		file, err := os.Open("/proc/uptime")
-		if err != nil {
-			log.Printf("Error opening /proc/uptime: %v", err)
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-			return
-		}
-		defer file.Close()
-
-		if _, err := file.WriteTo(w); err != nil {
-			log.Printf("Error writing response: %v", err)
-		}
-	})
+	http.HandleFunc("/", tarpit.Handler)
 
 	log.Printf("listening on :%d", *port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), nil))
