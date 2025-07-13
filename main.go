@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"website/favicon"
+	"website/robots"
 	"website/tarpit"
 )
 
@@ -14,6 +15,7 @@ func main() {
 	flag.Parse()
 
 	http.HandleFunc("/favicon.ico", favicon.Handler)
+	http.HandleFunc("/robots.txt", robots.Handler)
 	http.HandleFunc("/", tarpit.Handler)
 
 	log.Printf("listening on :%d", *port)

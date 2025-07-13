@@ -81,6 +81,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 <html>
 <head>
 <title>%s</title>
+<meta name="robots" content="noindex, nofollow">
 </head>
 <body>
 <p>%s</p>
