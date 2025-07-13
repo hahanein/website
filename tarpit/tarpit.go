@@ -50,7 +50,7 @@ func generateDeterministicPath(rng *rand.Rand) string {
 		pathParts[i] = words[rng.Intn(len(words))]
 	}
 
-	return "/" + strings.Join(pathParts, "/")
+	return "/" + strings.Join(pathParts, "-")
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
