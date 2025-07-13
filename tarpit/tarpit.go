@@ -8,7 +8,6 @@ import (
 	"math/rand"
 	"net/http"
 	"strings"
-	"time"
 )
 
 var words = []string{
@@ -64,8 +63,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotModified)
 		return
 	}
-
-	time.Sleep(4 * time.Second)
 
 	seed := hashPath(r.URL.Path)
 	content := generateDeterministicContent(seed)
