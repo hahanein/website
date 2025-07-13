@@ -77,8 +77,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 <body>
 <p>%s</p>
 <ul>
-	<li><a href=\"%s\">%s</a></li>
-	<li><a href=\"%s\">%s</a></li>
+	<li><a href="%s">%s</a></li>
+	<li><a href="%s">%s</a></li>
 </ul>
 </body>
 </html>
