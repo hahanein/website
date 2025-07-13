@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"net/http"
 	"strings"
+	"time"
 )
 
 var words = []string{
@@ -33,12 +34,17 @@ func hashPath(path string) uint64 {
 
 func generateDeterministicContent(seed uint64) string {
 	rng := rand.New(rand.NewSource(int64(seed)))
-	selectedWords := make([]string, 0, 16)
-	for range 16 {
-		selectedWords = append(selectedWords, words[rng.Intn(len(words))])
+	sentences := make([]string, 0, 6)
+
+	for range 6 {
+		x := words[rng.Intn(len(words))]
+		y := words[rng.Intn(len(words))]
+		z := words[rng.Intn(len(words))]
+		sentence := fmt.Sprintf("The %s of %s was %s.", x, y, z)
+		sentences = append(sentences, sentence)
 	}
 
-	content := strings.Join(selectedWords, " ")
+	content := strings.Join(sentences, " ")
 	return content
 }
 
@@ -58,6 +64,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotModified)
 		return
 	}
+
+	time.Sleep(4 * time.Second)
 
 	seed := hashPath(r.URL.Path)
 	content := generateDeterministicContent(seed)
